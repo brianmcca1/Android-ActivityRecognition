@@ -3,6 +3,7 @@
     package="com.tutsplus.activityrecognition">
 
     <uses-permission android:name="com.google.android.gms.permission.ACTIVITY_RECOGNITION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
 
     <application
         android:allowBackup="true"
@@ -19,6 +20,12 @@
         </activity>
 
         <service android:name=".ActivityRecognizedService" />
+        <service android:name=".GeofenceTransitionsIntentService"/>
     </application>
+
+    <meta-data
+        android:name="com.goog.eandroid.geo.API_KEY"
+        android:value="AIzaSyAGQtYpsEMhbyshh2JlO19uoS6xmNvlbhM"
+        />
 
 </manifest>
