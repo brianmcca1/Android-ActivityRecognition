@@ -31,6 +31,8 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
 
+import java.util.Date;
+
 
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
@@ -45,6 +47,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     private final int LIBRARY_REQ_CODE = 0;
     private final int FULLER_REQ_CODE = 1;
     private StepReceiver stepReceiver;
+    private Date startedActivity;
     int speed = 0;//0 is still, 1 is walking and 2 is running
     int fullerCount = 0;
     int libraryCount = 0;
@@ -56,6 +59,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        startedActivity = new Date();
         setContentView(R.layout.activity_main);
         moveText = (TextView) findViewById(R.id.MovementText);
         moveImage = (ImageView) findViewById(R.id.MovementImage);
@@ -285,11 +289,27 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
         @Override
         public void onReceive(Context context, Intent intent){
+
             int speedExtra = intent.getIntExtra("SPEED", 0);
+            if(speedExtra != speed){
+                Date newDate = new Date();
+                int secondsPassed = newDate.getSeconds() - startedActivity.getSeconds();
+                if(speed == 0){
+                    Toast.makeText(getParent(), "You have just been still for " + secondsPassed + " seconds.", Toast.LENGTH_SHORT);
+                } else if(speed == 1){
+                    Toast.makeText(getParent(), "You have just been walking for " + secondsPassed + " seconds.", Toast.LENGTH_SHORT);
+                } else if(speed == 2){
+                    Toast.makeText(getParent(), "You have just been running for " + secondsPassed + " seconds.", Toast.LENGTH_SHORT);
+                }
+                startedActivity = newDate;
+            }
             if(speedExtra == 0){
+
+
                 speed = 0;
                 moveText.setText(R.string.move_still);
                 moveImage.setImageResource(R.mipmap.still);
+
             } else if(speedExtra == 1){
                 speed = 1;
                 moveText.setText(R.string.move_walk);
