@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     private PendingIntent pendingIntent;
     private static final String LIBRARY_REQ_ID = "LIBRARY";
     private static final String FULLER_REQ_ID = "FULLER";
-    private static final float GEOFENCE_RADIUS = 500.0f; // in meters
+    private static final float GEOFENCE_RADIUS = 70.0f; // in meters
     private PendingIntent geoFencePendingIntent;
     private final int LIBRARY_REQ_CODE = 0;
     private final int FULLER_REQ_CODE = 1;
@@ -68,33 +68,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
         fullerVisits.setText("Visits to Fuller labs geoFence: " + fullerCount);
         libraryVisits.setText("Visits to Library geoFence: " + libraryCount);
-        final Button StillButton = (Button) findViewById(R.id.StillButton);
-        StillButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                speed = 0;
-                moveText.setText(R.string.move_still);
-                moveImage.setImageResource(R.mipmap.still);
-            }
-        });
-
-        final Button WalkButton = (Button) findViewById(R.id.WalkButton);
-        WalkButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                speed = 1;
-                moveText.setText(R.string.move_walk);
-                moveImage.setImageResource(R.mipmap.walking);
-            }
-        });
-
-        final Button RunButton = (Button) findViewById(R.id.RunButton);
-        RunButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                speed = 2;
-                moveText.setText(R.string.move_run);
-                moveImage.setImageResource(R.mipmap.running);
-            }
-        });
-
         mApiClient = new GoogleApiClient.Builder(this)
                 .addApi(ActivityRecognition.API)
                 .addApi (LocationServices.API)
