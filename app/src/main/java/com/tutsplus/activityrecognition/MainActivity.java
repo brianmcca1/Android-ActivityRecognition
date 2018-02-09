@@ -24,6 +24,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.location.ActivityRecognition;
+import com.google.android.gms.location.DetectedActivity;
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofencingRequest;
 import com.google.android.gms.location.LocationCallback;
@@ -56,7 +57,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     private final int FULLER_REQ_CODE = 1;
     private StepReceiver stepReceiver;
     private Date startedActivity;
-    int speed = 0;//0 is still, 1 is walking and 2 is running
+    int speed = 0; //Uses DetectedActivity constants for movement
     int fullerCount = 0;
     int libraryCount = 0;
     TextView moveText;
@@ -270,6 +271,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 return;
             }
             String geofenceId = intent.getStringExtra(StepsService.INTENT_EXTRA_GEOFENCE_REQ_ID);
+            // The service is only needed for detecting min number of steps, we may terminate it now
+            stopService(intent);
             String location;
             if(geofenceId.equals(FULLER_REQ_ID)){
                 location = "Fuller Labs";
@@ -291,30 +294,30 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         @Override
         public void onReceive(Context context, Intent intent){
 
-            int speedExtra = intent.getIntExtra("SPEED", 0);
+            int speedExtra = intent.getIntExtra(ActivityRecognizedService.INTENT_EXTRA_ACTIVITY_RECOG, -1);
             if(speedExtra != speed){
                 Date newDate = new Date();
                 int secondsPassed = newDate.getSeconds() - startedActivity.getSeconds();
-                if(speed == 0){
+                if(speed == DetectedActivity.STILL ){
                     Toast.makeText(getParent(), "You have just been still for " + secondsPassed + " seconds.", Toast.LENGTH_SHORT);
-                } else if(speed == 1){
+                } else if(speed == DetectedActivity.WALKING){
                     Toast.makeText(getParent(), "You have just been walking for " + secondsPassed + " seconds.", Toast.LENGTH_SHORT);
-                } else if(speed == 2){
+                } else if(speed == DetectedActivity.RUNNING){
                     Toast.makeText(getParent(), "You have just been running for " + secondsPassed + " seconds.", Toast.LENGTH_SHORT);
                 }
                 startedActivity = newDate;
             }
-            if(speedExtra == 0){
-                speed = 0;
+            if(speedExtra == DetectedActivity.STILL){
+                speed = DetectedActivity.STILL;
                 moveText.setText(R.string.move_still);
                 moveImage.setImageResource(R.mipmap.still);
 
             } else if(speedExtra == 1){
-                speed = 1;
+                speed = DetectedActivity.WALKING;
                 moveText.setText(R.string.move_walk);
                 moveImage.setImageResource(R.mipmap.walking);
             } else if(speedExtra == 2){
-                speed = 2;
+                speed = DetectedActivity.RUNNING;
                 moveText.setText(R.string.move_run);
                 moveImage.setImageResource(R.mipmap.running);
             }
