@@ -2,6 +2,7 @@ package com.tutsplus.activityrecognition;
 
 import android.Manifest;
 import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -13,6 +14,11 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -39,11 +45,51 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     private final int LIBRARY_REQ_CODE = 0;
     private final int FULLER_REQ_CODE = 1;
     private StepReceiver stepReceiver;
+    int speed = 0;//0 is still, 1 is walking and 2 is running
+    int fullerCount = 0;
+    int libraryCount = 0;
+    TextView moveText;
+    ImageView moveImage;
+    TextView fullerVisits;
+    TextView libraryVisits;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        moveText = (TextView) findViewById(R.id.MovementText);
+        moveImage = (ImageView) findViewById(R.id.MovementImage);
+        fullerVisits = (TextView) findViewById(R.id.FullerVisits);
+        libraryVisits = (TextView) findViewById(R.id.LibraryVisits);
+
+        fullerVisits.setText("Visits to Fuller labs geoFence: " + fullerCount);
+        libraryVisits.setText("Visits to Library geoFence: " + libraryCount);
+        final Button StillButton = (Button) findViewById(R.id.StillButton);
+        StillButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                speed = 0;
+                moveText.setText(R.string.move_still);
+                moveImage.setImageResource(R.mipmap.still);
+            }
+        });
+
+        final Button WalkButton = (Button) findViewById(R.id.WalkButton);
+        WalkButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                speed = 1;
+                moveText.setText(R.string.move_walk);
+                moveImage.setImageResource(R.mipmap.walking);
+            }
+        });
+
+        final Button RunButton = (Button) findViewById(R.id.RunButton);
+        RunButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                speed = 2;
+                moveText.setText(R.string.move_run);
+                moveImage.setImageResource(R.mipmap.running);
+            }
+        });
 
         mApiClient = new GoogleApiClient.Builder(this)
                 .addApi(ActivityRecognition.API)
@@ -209,7 +255,30 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         addGeofence( geofenceRequest, reqCode );
     }
 
+    private class StepReceiver extends BroadcastReceiver {
 
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // TODO: This method is called when the BroadcastReceiver is receiving
+            // an Intent broadcast.
+            // So we should communicate with MainActivity to increment the count of the relevant geofence,
+            // and make the appropriate Toast
+            String geofenceId = intent.getStringExtra("GEOFENCE_ENTERED");
+            String location;
+            if(geofenceId.equals(FULLER_REQ_ID)){
+                location = "Fuller Labs";
+                fullerCount++;
+                fullerVisits.setText("Visits to Fuller labs geoFence: " + fullerCount);
+            } else {
+                location = "Gordon Library";
+                libraryCount++;
+                libraryVisits.setText("Visits to Library geoFence: " + libraryCount);
+            }
+            Toast.makeText(getParent(),
+                    "You have taken 6 steps inside the " + location + "Geofence, incrementing counter",
+                    Toast.LENGTH_LONG).show();
+        }
+    }
 
 
 }
