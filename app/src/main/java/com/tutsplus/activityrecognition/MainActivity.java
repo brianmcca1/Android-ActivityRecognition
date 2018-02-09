@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
@@ -37,6 +38,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     private PendingIntent geoFencePendingIntent;
     private final int LIBRARY_REQ_CODE = 0;
     private final int FULLER_REQ_CODE = 1;
+    private StepReceiver stepReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +56,20 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         this.startGeofence(FULLER_REQ_ID);
         mApiClient.connect();
     }
+    @Override
+    public void onStart(){
+        super.onStart();
+        stepReceiver = new StepReceiver();
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("STEP"); // TODO: Change the action name to correspond with the one sent from StepReceiver
+        registerReceiver(stepReceiver, intentFilter);
+    }
 
+    @Override
+    public void onStop(){
+        super.onStop();
+        unregisterReceiver(stepReceiver);
+    }
     @Override
     public void onConnected(@Nullable Bundle bundle) {
         Intent intent = new Intent( this, ActivityRecognizedService.class );
@@ -194,9 +209,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         addGeofence( geofenceRequest, reqCode );
     }
 
-    static Intent makeNotificationIntent(Context geofenceService, String msg)
-    {
 
-        return new Intent(geofenceService,MainActivity.class);
-    }
+
+
 }
