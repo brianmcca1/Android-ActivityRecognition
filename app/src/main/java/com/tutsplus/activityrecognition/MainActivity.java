@@ -29,12 +29,20 @@ import com.google.android.gms.location.GeofencingRequest;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 
-public class MainActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
+public class MainActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, OnMapReadyCallback, LocationListener {
 
     public GoogleApiClient mApiClient;
     private Location lastLocation;
@@ -55,6 +63,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     ImageView moveImage;
     TextView fullerVisits;
     TextView libraryVisits;
+    GoogleMap map;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +86,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
         this.startGeofence(LIBRARY_REQ_ID);
         this.startGeofence(FULLER_REQ_ID);
+        MapFragment mapFragment = (MapFragment) getFragmentManager()
+                .findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
         mApiClient.connect();
     }
     @Override
@@ -147,7 +159,11 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     public void onLocationChanged(Location location) {
 
         lastLocation = location;
-
+        LatLng user = new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude());
+        map.clear();
+        map.addMarker(new MarkerOptions().position(user)
+                .title("Marker on user"));
+        map.moveCamera(CameraUpdateFactory.newLatLng(user));
     }
 
 
@@ -232,6 +248,18 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         addGeofence( geofenceRequest, reqCode );
     }
 
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        // Add a marker in Sydney, Australia,
+        // and move the map's camera to the same location.
+
+        LatLng user = new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude());
+        googleMap.addMarker(new MarkerOptions().position(user)
+                .title("Marker on user"));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(user));
+        map = googleMap;
+    }
+
     private class StepReceiver extends BroadcastReceiver {
 
         @Override
@@ -277,8 +305,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 startedActivity = newDate;
             }
             if(speedExtra == 0){
-
-
                 speed = 0;
                 moveText.setText(R.string.move_still);
                 moveImage.setImageResource(R.mipmap.still);
