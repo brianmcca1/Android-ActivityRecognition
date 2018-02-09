@@ -259,8 +259,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            // TODO: This method is called when the BroadcastReceiver is receiving
-            // an Intent broadcast.
             // So we should communicate with MainActivity to increment the count of the relevant geofence,
             // and make the appropriate Toast
             String geofenceId = intent.getStringExtra("GEOFENCE_ENTERED");
@@ -277,6 +275,27 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             Toast.makeText(getParent(),
                     "You have taken 6 steps inside the " + location + "Geofence, incrementing counter",
                     Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private class ActivityReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent){
+            int speedExtra = intent.getIntExtra("SPEED", 0);
+            if(speedExtra == 0){
+                speed = 0;
+                moveText.setText(R.string.move_still);
+                moveImage.setImageResource(R.mipmap.still);
+            } else if(speedExtra == 1){
+                speed = 1;
+                moveText.setText(R.string.move_walk);
+                moveImage.setImageResource(R.mipmap.walking);
+            } else if(speedExtra == 2){
+                speed = 2;
+                moveText.setText(R.string.move_run);
+                moveImage.setImageResource(R.mipmap.running);
+            }
         }
     }
 
