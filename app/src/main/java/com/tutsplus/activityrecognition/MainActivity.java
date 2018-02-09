@@ -107,7 +107,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         super.onStart();
         stepReceiver = new StepReceiver();
         IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction("STEP"); // TODO: Change the action name to correspond with the one sent from StepReceiver
+        intentFilter.addAction(StepsService.MIN_STEPS_TRIGGER_ACTION);
         registerReceiver(stepReceiver, intentFilter);
     }
 
@@ -263,7 +263,10 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             // an Intent broadcast.
             // So we should communicate with MainActivity to increment the count of the relevant geofence,
             // and make the appropriate Toast
-            String geofenceId = intent.getStringExtra("GEOFENCE_ENTERED");
+            if (!intent.getBooleanExtra(StepsService.INTENT_EXTRA_TRIGGER_FLAG, false)) {
+                return;
+            }
+            String geofenceId = intent.getStringExtra(StepsService.INTENT_EXTRA_GEOFENCE_REQ_ID);
             String location;
             if(geofenceId.equals(FULLER_REQ_ID)){
                 location = "Fuller Labs";

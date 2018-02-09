@@ -3,7 +3,6 @@ package com.tutsplus.activityrecognition;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -18,16 +17,19 @@ import android.util.Log;
 
 public class StepsService extends Service implements SensorEventListener {
     private static final String TAG = StepsService.class.getSimpleName();
-    private static final int DEFAULT_MIN_STEP_TRIGGER = 6;
-    private static final String MIN_STEPS_TRIGGER_ACTION = "MIN_STEPS_TRIGGER_ACTION";
+    private static final int MIN_STEP_TRIGGER = 6;
+    public static final String MIN_STEPS_TRIGGER_ACTION = "MIN_STEPS_TRIGGER_ACTION";
+    public static final String INTENT_EXTRA_TRIGGER_FLAG = "INTENT_EXTRA_TRIGGER_FLAG";
+    public static final String INTENT_EXTRA_GEOFENCE_REQ_ID = "INTENT_EXTRA_GEOFENCE_REQ_ID";
     // Value of the step counter sensor when the listener was registered.
     // (Total steps are calculated from this value.)
     private int mCounterSteps = 0;
-
     // Steps counted in current session
     private int mSteps = 0;
+
     private SensorManager mSensorManager;
     private Sensor mStepDetectorSensor;
+    private String mGeoFenceReqID;
 
 
     @Override
@@ -48,6 +50,7 @@ public class StepsService extends Service implements SensorEventListener {
     @Override
     public int onStartCommand(Intent intent, int flags, int
             startId) {
+        mGeoFenceReqID = intent.getStringExtra(INTENT_EXTRA_GEOFENCE_REQ_ID);
         return Service.START_STICKY;
     }
 
@@ -74,10 +77,11 @@ public class StepsService extends Service implements SensorEventListener {
             // Calculate steps taken based on first counter value received.
             mSteps = (int) event.values[0] - mCounterSteps;
 
-            if (mSteps > DEFAULT_MIN_STEP_TRIGGER) {
+            if (mSteps > MIN_STEP_TRIGGER) {
                 Intent intent = new Intent();
                 intent.setAction(MIN_STEPS_TRIGGER_ACTION);
-                intent.putExtra("MinStepsTriggered", true);
+                intent.putExtra(INTENT_EXTRA_TRIGGER_FLAG, true);
+                intent.putExtra(INTENT_EXTRA_GEOFENCE_REQ_ID, mGeoFenceReqID);
                 sendBroadcast(intent);
             }
 
