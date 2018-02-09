@@ -25,11 +25,8 @@
 
         <service android:name=".ActivityRecognizedService" />
         <service android:name=".GeofenceTransitionService" />
+        <service android:name=".StepsService"/>
 
-        <receiver
-            android:name=".StepReceiver"
-            android:enabled="true"
-            android:exported="true"></receiver>
     </application>
 
 </manifest>
