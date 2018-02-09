@@ -28,6 +28,8 @@ import java.util.List;
 public class GeofenceTransitionService extends IntentService {
     private static final String TAG = GeofenceTransitionService.class.getSimpleName();
     public static final int GEOFENCE_NOTIFICATION_ID = 0;
+    private static final String geofenceExtra = "GEOFENCE_ENTERED";
+    private Intent stepIntent;
 
     public GeofenceTransitionService() {
         super(TAG);
@@ -53,27 +55,20 @@ public class GeofenceTransitionService extends IntentService {
                 geoFenceTransition == Geofence.GEOFENCE_TRANSITION_EXIT ) {
             // Get the geofence that were triggered
             List<Geofence> triggeringGeofences = geofencingEvent.getTriggeringGeofences();
-            // Create a detail message with Geofences received
-            String geofenceTransitionDetails = getGeofenceTrasitionDetails(geoFenceTransition, triggeringGeofences );
-            // Send notification details as a String
+
+            // If you entered a Geofence, start the StepCounting service.
+            // If you exited a Geofence, stop that service.
+            if( geoFenceTransition == Geofence.GEOFENCE_TRANSITION_ENTER){
+                stepIntent = new Intent(this, StepsService.class);
+                stepIntent.putExtra(geofenceExtra, triggeringGeofences.get(0).getRequestId());
+                startService(stepIntent);
+            } else {
+                stopService(stepIntent);
+            }
+
         }
     }
 
-    // Create a detail message with Geofences received
-    private String getGeofenceTrasitionDetails(int geoFenceTransition, List<Geofence> triggeringGeofences) {
-        // get the ID of each geofence triggered
-        ArrayList<String> triggeringGeofencesList = new ArrayList<>();
-        for ( Geofence geofence : triggeringGeofences ) {
-            triggeringGeofencesList.add( geofence.getRequestId() );
-        }
-
-        String status = null;
-        if ( geoFenceTransition == Geofence.GEOFENCE_TRANSITION_ENTER )
-            status = "Entering ";
-        else if ( geoFenceTransition == Geofence.GEOFENCE_TRANSITION_EXIT )
-            status = "Exiting ";
-        return status + TextUtils.join( ", ", triggeringGeofencesList);
-    }
 
 
 
