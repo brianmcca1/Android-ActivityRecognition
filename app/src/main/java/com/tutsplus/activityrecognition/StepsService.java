@@ -82,6 +82,7 @@ public class StepsService extends Service implements SensorEventListener {
                 intent.setAction(MIN_STEPS_TRIGGER_ACTION);
                 intent.putExtra(INTENT_EXTRA_TRIGGER_FLAG, true);
                 intent.putExtra(INTENT_EXTRA_GEOFENCE_REQ_ID, mGeoFenceReqID);
+                intent.setClass(this, MainActivity.StepReceiver.class);
                 sendBroadcast(intent);
             }
 

@@ -4,10 +4,12 @@
 
     <uses-permission android:name="com.google.android.gms.permission.ACTIVITY_RECOGNITION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
-    <meta-data
-        android:name="com.goog.eandroid.geo.API_KEY"
-        android:value="AIzaSyAGQtYpsEMhbyshh2JlO19uoS6xmNvlbhM" />
 
     <application
         android:allowBackup="true"
@@ -15,6 +17,30 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <!--<receiver-->
+        <!--android:name="com.tutsplus.activityrecognition.MainActivity$ActivityReceiver"-->
+        <!--android:enabled="true">-->
+            <!--<intent-filter>-->
+                <!--<action android:name="com.tutsplus.activityrecognition.ActivityRecognizedService.ACTION_ACTIVITY_RECOG"/>-->
+            <!--</intent-filter>-->
+        <!--</receiver>-->
+        <!--<receiver-->
+        <!--android:name="com.tutsplus.activityrecognition.MainActivity$StepReceiver"-->
+        <!--android:enabled="true">-->
+            <!--<intent-filter>-->
+                <!--<action android:name="com.tutsplus.activityrecognition.StepsService.MIN_STEPS_TRIGGER_ACTION"/>-->
+            <!--</intent-filter>-->
+        <!--</receiver>-->
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyAGQtYpsEMhbyshh2JlO19uoS6xmNvlbhM" />
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version"
+            />
+
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

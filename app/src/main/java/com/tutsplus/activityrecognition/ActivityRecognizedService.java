@@ -22,8 +22,8 @@ public class ActivityRecognizedService extends IntentService {
         super("ActivityRecognizedService");
     }
 
-    private final double ACTIVITY_RECOG_MIN_THRESH = 0.75;
-    private final List<Integer> ACCEPTED_ACTIVITIES = Arrays.asList(DetectedActivity.STILL, DetectedActivity.WALKING, DetectedActivity.RUNNING);
+    private final double ACTIVITY_RECOG_MIN_THRESH = 0.2;
+    private final List<Integer> ACCEPTED_ACTIVITIES = Arrays.asList(DetectedActivity.STILL, DetectedActivity.WALKING, DetectedActivity.RUNNING, DetectedActivity.ON_FOOT);
 
     public ActivityRecognizedService(String name) {
         super(name);
@@ -40,11 +40,17 @@ public class ActivityRecognizedService extends IntentService {
     private void handleDetectedActivities(ActivityRecognitionResult result) {
 
         DetectedActivity mostProbablyActivity = result.getMostProbableActivity();
-            if(ACCEPTED_ACTIVITIES.contains(mostProbablyActivity.getType()) &&
+
+        int activityType = mostProbablyActivity.getType();
+            if(ACCEPTED_ACTIVITIES.contains(activityType) &&
                     mostProbablyActivity.getConfidence() > ACTIVITY_RECOG_MIN_THRESH) {
+                if(activityType == DetectedActivity.ON_FOOT) {
+                    activityType = DetectedActivity.WALKING;
+                }
                 Intent intent = new Intent();
                 intent.setAction(ACTION_ACTIVITY_RECOG);
-                intent.putExtra(INTENT_EXTRA_ACTIVITY_RECOG, mostProbablyActivity.getType());
+                intent.putExtra(INTENT_EXTRA_ACTIVITY_RECOG, activityType);
+                intent.setClass(this, MainActivity.ActivityReceiver.class);
                 sendBroadcast(intent);
             }
         }

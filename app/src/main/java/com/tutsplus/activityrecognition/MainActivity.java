@@ -33,7 +33,9 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -56,6 +58,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     private final int LIBRARY_REQ_CODE = 0;
     private final int FULLER_REQ_CODE = 1;
     private StepReceiver stepReceiver;
+    private ActivityReceiver activityReceiver;
     private Date startedActivity;
     int speed = 0; //Uses DetectedActivity constants for movement
     int fullerCount = 0;
@@ -65,6 +68,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     TextView fullerVisits;
     TextView libraryVisits;
     GoogleMap map;
+    MapView mapView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,18 +91,20 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
         this.startGeofence(LIBRARY_REQ_ID);
         this.startGeofence(FULLER_REQ_ID);
-        MapFragment mapFragment = (MapFragment) getFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+//        MapFragment mapFragment = (MapFragment) getFragmentManager()
+//                .findFragmentById(R.id.map);
+//        mapFragment.getMapAsync(this);
+        mapView = (MapView) this.findViewById(R.id.map);
+        mapView.onCreate(savedInstanceState);
+        mapView.getMapAsync(this);
+
         mApiClient.connect();
     }
     @Override
     public void onStart(){
         super.onStart();
-        stepReceiver = new StepReceiver();
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(StepsService.MIN_STEPS_TRIGGER_ACTION);
-        registerReceiver(stepReceiver, intentFilter);
+
+
     }
 
     @Override
@@ -108,9 +114,19 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     }
     @Override
     public void onConnected(@Nullable Bundle bundle) {
+        stepReceiver = new StepReceiver();
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(StepsService.MIN_STEPS_TRIGGER_ACTION);
+        registerReceiver(stepReceiver, intentFilter);
+        activityReceiver = new ActivityReceiver();
+        IntentFilter intentFilterActivity = new IntentFilter();
+        intentFilter.addAction(ActivityRecognizedService.ACTION_ACTIVITY_RECOG);
+        registerReceiver(activityReceiver, intentFilterActivity);
+
         Intent intent = new Intent( this, ActivityRecognizedService.class );
         pendingIntent = PendingIntent.getService( this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT );
         ActivityRecognition.ActivityRecognitionApi.requestActivityUpdates( mApiClient, 3000, pendingIntent );
+        startService(intent);
     }
 
     @Override
@@ -159,6 +175,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     @Override
     public void onLocationChanged(Location location) {
 
+        if (lastLocation == null) {
+            return;
+        }
         lastLocation = location;
         LatLng user = new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude());
         map.clear();
@@ -197,6 +216,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 .setCircularRegion( latLng.latitude, latLng.longitude, radius)
                 .setTransitionTypes( Geofence.GEOFENCE_TRANSITION_ENTER
                         | Geofence.GEOFENCE_TRANSITION_EXIT )
+                .setExpirationDuration(Geofence.NEVER_EXPIRE)
                 .build();
     }
 
@@ -253,7 +273,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     public void onMapReady(GoogleMap googleMap) {
         // Add a marker in Sydney, Australia,
         // and move the map's camera to the same location.
-
+        if(lastLocation == null) {
+            return;
+        }
         LatLng user = new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude());
         googleMap.addMarker(new MarkerOptions().position(user)
                 .title("Marker on user"));
@@ -261,8 +283,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         map = googleMap;
     }
 
-    private class StepReceiver extends BroadcastReceiver {
+    public class StepReceiver extends BroadcastReceiver {
 
+        public StepReceiver() {};
         @Override
         public void onReceive(Context context, Intent intent) {
             // So we should communicate with MainActivity to increment the count of the relevant geofence,
@@ -289,8 +312,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         }
     }
 
-    private class ActivityReceiver extends BroadcastReceiver {
+    public class ActivityReceiver extends BroadcastReceiver {
 
+        public ActivityReceiver() {};
         @Override
         public void onReceive(Context context, Intent intent){
 
