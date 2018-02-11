@@ -57,17 +57,17 @@
       <file leaf-file-name="MainActivity.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/tutsplus/activityrecognition/MainActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="124">
-              <caret line="201" column="0" lean-forward="false" selection-start-line="201" selection-start-column="0" selection-end-line="201" selection-end-column="0" />
+            <state relative-caret-position="391">
+              <caret line="197" column="58" lean-forward="false" selection-start-line="197" selection-start-column="58" selection-end-line="197" selection-end-column="58" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="method#onStart#0;class#MainActivity#0" expanded="false" />
                 <element signature="method#onConnectionSuspended#0;class#MainActivity#0" expanded="false" />
                 <element signature="method#onConnectionFailed#0;class#MainActivity#0" expanded="false" />
                 <element signature="method#getLastKnownLocation#0;class#MainActivity#0" expanded="false" />
-                <element signature="method#startLocationUpdates#0;class#MainActivity#0" expanded="false" />
-                <element signature="e#6747#7325#0" expanded="true" />
-                <element signature="e#7324#7325#0" expanded="true" />
+                <element signature="e#6804#7667#0" expanded="true" />
+                <element signature="e#7666#7667#0" expanded="true" />
+                <element signature="method#onLocationChanged#0;class#MainActivity#0" expanded="false" />
                 <element signature="method#checkPermission#0;class#MainActivity#0" expanded="false" />
                 <element signature="method#createGeofence#0;class#MainActivity#0" expanded="false" />
                 <element signature="method#createGeofenceRequest#0;class#MainActivity#0" expanded="false" />
@@ -1304,7 +1304,7 @@
       <option name="ACTIVITY_CLASS" value="" />
       <method>
         <option name="Android.Gradle.BeforeRunTask" enabled="true" />
-        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1518318500632" />
+        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1518319864714" />
       </method>
     </configuration>
     <configuration default="true" type="AndroidTestRunConfigurationType" factoryName="Android Instrumented Tests">
@@ -1352,7 +1352,7 @@
       </Profilers>
       <method>
         <option name="Android.Gradle.BeforeRunTask" enabled="true" />
-        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1518318500632" />
+        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1518319864714" />
       </method>
     </configuration>
     <configuration default="true" type="Application" factoryName="Application">
@@ -1514,7 +1514,7 @@
       <option name="ACTIVITY_CLASS" value="" />
       <method>
         <option name="Android.Gradle.BeforeRunTask" enabled="true" />
-        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1518318500633" />
+        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1518319864715" />
       </method>
     </configuration>
     <list size="1">
@@ -1603,7 +1603,15 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="42" />
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/tutsplus/activityrecognition/MainActivity.java</url>
+          <line>152</line>
+          <properties />
+          <option name="timeStamp" value="42" />
+        </line-breakpoint>
+      </breakpoints>
+      <option name="time" value="43" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -1661,9 +1669,9 @@
             <element signature="method#onConnectionSuspended#0;class#MainActivity#0" expanded="false" />
             <element signature="method#onConnectionFailed#0;class#MainActivity#0" expanded="false" />
             <element signature="method#getLastKnownLocation#0;class#MainActivity#0" expanded="false" />
-            <element signature="method#startLocationUpdates#0;class#MainActivity#0" expanded="false" />
-            <element signature="e#6747#7325#0" expanded="true" />
-            <element signature="e#7324#7325#0" expanded="true" />
+            <element signature="e#6804#7667#0" expanded="true" />
+            <element signature="e#7666#7667#0" expanded="true" />
+            <element signature="method#onLocationChanged#0;class#MainActivity#0" expanded="false" />
             <element signature="method#checkPermission#0;class#MainActivity#0" expanded="false" />
             <element signature="method#createGeofence#0;class#MainActivity#0" expanded="false" />
             <element signature="method#createGeofenceRequest#0;class#MainActivity#0" expanded="false" />
@@ -1738,9 +1746,9 @@
             <element signature="method#onConnectionSuspended#0;class#MainActivity#0" expanded="false" />
             <element signature="method#onConnectionFailed#0;class#MainActivity#0" expanded="false" />
             <element signature="method#getLastKnownLocation#0;class#MainActivity#0" expanded="false" />
-            <element signature="method#startLocationUpdates#0;class#MainActivity#0" expanded="false" />
-            <element signature="e#6747#7325#0" expanded="true" />
-            <element signature="e#7324#7325#0" expanded="true" />
+            <element signature="e#6804#7667#0" expanded="true" />
+            <element signature="e#7666#7667#0" expanded="true" />
+            <element signature="method#onLocationChanged#0;class#MainActivity#0" expanded="false" />
             <element signature="method#checkPermission#0;class#MainActivity#0" expanded="false" />
             <element signature="method#createGeofence#0;class#MainActivity#0" expanded="false" />
             <element signature="method#createGeofenceRequest#0;class#MainActivity#0" expanded="false" />
@@ -1780,9 +1788,9 @@
             <element signature="method#onConnectionSuspended#0;class#MainActivity#0" expanded="false" />
             <element signature="method#onConnectionFailed#0;class#MainActivity#0" expanded="false" />
             <element signature="method#getLastKnownLocation#0;class#MainActivity#0" expanded="false" />
-            <element signature="method#startLocationUpdates#0;class#MainActivity#0" expanded="false" />
-            <element signature="e#6747#7325#0" expanded="true" />
-            <element signature="e#7324#7325#0" expanded="true" />
+            <element signature="e#6804#7667#0" expanded="true" />
+            <element signature="e#7666#7667#0" expanded="true" />
+            <element signature="method#onLocationChanged#0;class#MainActivity#0" expanded="false" />
             <element signature="method#checkPermission#0;class#MainActivity#0" expanded="false" />
             <element signature="method#createGeofence#0;class#MainActivity#0" expanded="false" />
             <element signature="method#createGeofenceRequest#0;class#MainActivity#0" expanded="false" />
@@ -1854,9 +1862,9 @@
             <element signature="method#onConnectionSuspended#0;class#MainActivity#0" expanded="false" />
             <element signature="method#onConnectionFailed#0;class#MainActivity#0" expanded="false" />
             <element signature="method#getLastKnownLocation#0;class#MainActivity#0" expanded="false" />
-            <element signature="method#startLocationUpdates#0;class#MainActivity#0" expanded="false" />
-            <element signature="e#6747#7325#0" expanded="true" />
-            <element signature="e#7324#7325#0" expanded="true" />
+            <element signature="e#6804#7667#0" expanded="true" />
+            <element signature="e#7666#7667#0" expanded="true" />
+            <element signature="method#onLocationChanged#0;class#MainActivity#0" expanded="false" />
             <element signature="method#checkPermission#0;class#MainActivity#0" expanded="false" />
             <element signature="method#createGeofence#0;class#MainActivity#0" expanded="false" />
             <element signature="method#createGeofenceRequest#0;class#MainActivity#0" expanded="false" />
@@ -1914,9 +1922,9 @@
             <element signature="method#onConnectionSuspended#0;class#MainActivity#0" expanded="false" />
             <element signature="method#onConnectionFailed#0;class#MainActivity#0" expanded="false" />
             <element signature="method#getLastKnownLocation#0;class#MainActivity#0" expanded="false" />
-            <element signature="method#startLocationUpdates#0;class#MainActivity#0" expanded="false" />
-            <element signature="e#6747#7325#0" expanded="true" />
-            <element signature="e#7324#7325#0" expanded="true" />
+            <element signature="e#6804#7667#0" expanded="true" />
+            <element signature="e#7666#7667#0" expanded="true" />
+            <element signature="method#onLocationChanged#0;class#MainActivity#0" expanded="false" />
             <element signature="method#checkPermission#0;class#MainActivity#0" expanded="false" />
             <element signature="method#createGeofence#0;class#MainActivity#0" expanded="false" />
             <element signature="method#createGeofenceRequest#0;class#MainActivity#0" expanded="false" />
@@ -2003,17 +2011,17 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/tutsplus/activityrecognition/MainActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="124">
-          <caret line="201" column="0" lean-forward="false" selection-start-line="201" selection-start-column="0" selection-end-line="201" selection-end-column="0" />
+        <state relative-caret-position="391">
+          <caret line="197" column="58" lean-forward="false" selection-start-line="197" selection-start-column="58" selection-end-line="197" selection-end-column="58" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="method#onStart#0;class#MainActivity#0" expanded="false" />
             <element signature="method#onConnectionSuspended#0;class#MainActivity#0" expanded="false" />
             <element signature="method#onConnectionFailed#0;class#MainActivity#0" expanded="false" />
             <element signature="method#getLastKnownLocation#0;class#MainActivity#0" expanded="false" />
-            <element signature="method#startLocationUpdates#0;class#MainActivity#0" expanded="false" />
-            <element signature="e#6747#7325#0" expanded="true" />
-            <element signature="e#7324#7325#0" expanded="true" />
+            <element signature="e#6804#7667#0" expanded="true" />
+            <element signature="e#7666#7667#0" expanded="true" />
+            <element signature="method#onLocationChanged#0;class#MainActivity#0" expanded="false" />
             <element signature="method#checkPermission#0;class#MainActivity#0" expanded="false" />
             <element signature="method#createGeofence#0;class#MainActivity#0" expanded="false" />
             <element signature="method#createGeofenceRequest#0;class#MainActivity#0" expanded="false" />

@@ -44,6 +44,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -184,10 +185,16 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             public void onLocationChanged(Location location) {
                 lastLocation = location;
                 LatLng user = new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude());
+                CameraPosition User =
+                        new CameraPosition.Builder().target(user)
+                                .zoom(15.5f)
+                                .bearing(0)
+                                .tilt(25)
+                                .build();
                 map.clear();
                 map.addMarker(new MarkerOptions().position(user)
                         .title("Marker on user"));
-                map.moveCamera(CameraUpdateFactory.newLatLng(user));
+                map.moveCamera(CameraUpdateFactory.newCameraPosition(User));
                 Log.e("ONLOCATIONCHANGED", "GPS CHANGED");
             }
         };
